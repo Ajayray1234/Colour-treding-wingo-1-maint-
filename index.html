@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wingo Lottery Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .result-box {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: left;
+      width: 80%;
+      max-width: 500px;
+    }
+    .result-box p {
+      margin: 10px 0;
+      font-size: 1.2rem;
+    }
+    #timer {
+      font-size: 2rem;
+      margin-top: 10px;
+    }
+    .rolling-text {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+    .blinking {
+      animation: blink 1s infinite;
+    }
+    .telegram-link {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+    .telegram-link a {
+      color: #00afff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wingo Lottery Game</h1>
+  <h2 class="rolling-text">Welcome to Wingo Lottery Game, Owner AjAy Bhay!</h2>
+
+  <div class="result-box">
+    <p><strong>Period Numbers:</strong> <span id="period"></span></p>
+    <p><strong>Predicted Number:</strong> <span id="predicted-number"></span></p>
+    <p><strong>Predicted Big/Small:</strong> <span id="predicted-result"></span></p>
+    <p><strong>Predicted Colour:</strong> <span id="predicted-color"></span></p>
+  </div>
+
+  <div id="timer" class="blinking">Timer: 60s</div>
+
+  <div class="telegram-link">
+    <p>Join us on Telegram:</p>
+    <a href="https://t.me/VIPpredictionmodfree" target="_blank">https://t.me/VIPpredictionmodfree</a>
+  </div>
+
+  <script>
+    const pattern = [
+      ["9", "BIG", "🟢"], ["2", "SMALL", "🔴"], ["9", "BIG", "🟢"], ["4", "SMALL", "🔴"],
+      ["7", "BIG", "🔴"], ["1", "SMALL", "🟢"], ["9", "BIG", "🟢"], ["5", "BIG", "🔴"],
+      ["3", "BIG", "🟢"], ["3", "SMALL", "🟢"], ["6", "BIG", "🔴"], ["6", "BIG", "🔴"],
+      ["8", "BIG", "🟢"], ["9", "BIG", "🔴"], ["6", "BIG", "🔴"], ["8", "BIG", "🟢"],
+      ["3", "SMALL", "🟢"], ["5", "BIG", "🟢"], ["7", "BIG", "🟢"], ["3", "SMALL", "🔴"],
+      ["7", "BIG", "🟢"], ["4", "SMALL", "🔴"], ["1", "SMALL", "🟢"], ["9", "BIG", "🟢"],
+      ["6", "BIG", "🔴"], ["0", "SMALL", "🔴🟢"], ["2", "SMALL", "🔴"], ["0", "SMALL", "🔴🟢"],
+      ["4", "SMALL", "🟢"], ["2", "SMALL", "🔴"], ["5", "BIG", "🔴"], ["5", "BIG", "🟢🔴"],
+      ["3", "SMALL", "🟢"], ["1", "SMALL", "🟢"], ["5", "BIG", "🟢🔴"], ["4", "SMALL", "🔴"],
+      ["2", "SMALL", "🟢"], ["6", "BIG", "🔴"], ["3", "SMALL", "🟢"], ["6", "BIG", "🔴"],
+    ];
+
+    let index = 0;
+
+    function updatePeriodAndResult() {
+      const now = new Date();
+      const totalMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+      const periodNumber = 10001 + totalMinutes;
+      const periodString = `${now.getUTCFullYear()}${String(now.getUTCMonth() + 1).padStart(2, '0')}${String(now.getUTCDate()).padStart(2, '0')}${periodNumber}`;
+
+      let predictedNumber, predictedResult, predictedColor;
+
+      if (index < pattern.length) {
+        [predictedNumber, predictedResult, predictedColor] = pattern[index];
+      } else {
+        predictedNumber = totalMinutes % 10;
+        predictedResult = predictedNumber >= 5 ? "BIG" : "SMALL";
+        predictedColor = predictedNumber % 2 === 0 ? "🔴" : "🟢";
+      }
+
+      document.getElementById("period").textContent = periodString;
+      document.getElementById("predicted-number").textContent = predictedNumber;
+      document.getElementById("predicted-result").textContent = predictedResult;
+      document.getElementById("predicted-color").textContent = predictedColor;
+
+      index++;
+      startCountdown(60 - now.getUTCSeconds());
+    }
+
+    function startCountdown(seconds) {
+      const timerElement = document.getElementById("timer");
+      const interval = setInterval(() => {
+        if (seconds <= 0) {
+          clearInterval(interval);
+          updatePeriodAndResult();
+        } else {
+          timerElement.textContent = `Timer: ${seconds}s`;
+          seconds--;
+        }
+      }, 1000);
+    }
+
+    updatePeriodAndResult();
+  </script>
+</body>
+</html>
